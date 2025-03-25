@@ -2,6 +2,8 @@
 using GerenciadorPedido.Domain.Interfaces;
 using GerenciadorPedido.Domain.Interfaces.Repository;
 using GerenciadorPedido.Domain.Models;
+using System.Drawing;
+using System.Runtime.ConstrainedExecution;
 
 namespace GerenciadorPedido.Domain.Services
 {
@@ -16,6 +18,8 @@ namespace GerenciadorPedido.Domain.Services
 
         public async Task<Pedido> Adicionar(Pedido pedido)
         {
+            validarDuplicidade(pedido);
+
             return await _repository.Adicionar(pedido);
         }
 
@@ -25,5 +29,17 @@ namespace GerenciadorPedido.Domain.Services
         }
 
         public void Dispose() => _repository?.Dispose();
+
+        #region Private Methods
+        private void validarDuplicidade(Pedido pedido)
+        {
+            var pedidos = _repository.Buscar(p => p.ClienteId == pedido.ClienteId && p.PedidoId == pedido.PedidoId).Result;
+
+            if (pedidos.Any())
+            {
+                throw new Exception("Já existe um pedido para este cliente.");
+            }
+        }
+        #endregion
     }
 }
