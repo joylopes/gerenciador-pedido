@@ -65,6 +65,39 @@ namespace GerenciadorPedido.Tests.Services
         }
         #endregion
 
+        #region Obter Por Id
+
+        [Fact]
+        public async Task ObterPorId_DeveRetornarPedido_SeExistir()
+        {
+            // Arrange
+            var pedido = _pedidoFaker.Generate();
+            _repository.ObterPedidoPorId(pedido.Id)
+                .Returns(Task.FromResult(pedido));
+
+            // Act
+            var result = await _service.ObterPorId(pedido.Id);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(pedido, options => options.Excluding(p => p.Imposto));
+        }
+
+        [Fact]
+        public async Task ObterPorId_DeveRetornarNull_SeNaoExistir()
+        {
+            // Arrange
+            _repository.ObterPedidoPorId(Arg.Any<int>())
+                .Returns(Task.FromResult<Pedido>(null));
+
+            // Act
+            var result = await _service.ObterPorId(9999);
+
+            // Assert
+            result.Should().BeNull();
+        }
+        #endregion
+
         #region Private Methods
         private Faker<Pedido> GenerarPedidoFake()
         {
