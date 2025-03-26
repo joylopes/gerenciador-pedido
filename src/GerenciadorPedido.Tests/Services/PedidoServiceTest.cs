@@ -98,6 +98,40 @@ namespace GerenciadorPedido.Tests.Services
         }
         #endregion
 
+        #region Obter Por Status
+
+        [Fact]
+        public async Task ObterPorStatus_DeveRetornarPedidos_SeExistirem()
+        {
+            // Arrange
+            var pedidos = _pedidoFaker.Generate(3);
+            _repository.ObterPedidosPorStatus(PedidoStatus.Criado)
+                .Returns(Task.FromResult(pedidos.AsEnumerable()));
+
+            // Act
+            var result = await _service.ObterPorStatus(PedidoStatus.Criado);
+
+            // Assert
+            result.Should().HaveCount(3);
+            result.Should().BeEquivalentTo(pedidos, options => options.Excluding(p => p.Imposto));
+        }
+
+        [Fact]
+        public async Task ObterPorStatus_DeveRetornarListaVazia_SeNaoExistiremPedidos()
+        {
+            // Arrange
+            _repository.ObterPedidosPorStatus(Arg.Any<PedidoStatus>())
+                .Returns(Task.FromResult<IEnumerable<Pedido>>(new List<Pedido>()));
+
+            // Act
+            var result = await _service.ObterPorStatus(PedidoStatus.Pendente);
+
+            // Assert
+            result.Should().BeEmpty();
+        }
+
+        #endregion
+
         #region Private Methods
         private Faker<Pedido> GenerarPedidoFake()
         {
