@@ -11,6 +11,7 @@ namespace GerenciadorPedido.Data.Mappings
         {
             builder.HasKey(p => p.Id);
             builder.HasIndex(p => new { p.PedidoId, p.ClienteId}).IsUnique();
+            builder.HasAlternateKey(p => p.PedidoId);
 
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
             builder.Property(p => p.Status).HasDefaultValue(PedidoStatus.Criado);
