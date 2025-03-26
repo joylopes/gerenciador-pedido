@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GerenciadorPedido.Api", "sr
 		{919479D7-237D-44F7-A591-1FA08198A1DC} = {919479D7-237D-44F7-A591-1FA08198A1DC}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GerenciadorPedido.Tests", "src\GerenciadorPedido.Tests\GerenciadorPedido.Tests.csproj", "{5D85723B-901F-44B3-87B4-6718C96060D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{536F4493-CB4D-4187-B77E-87D476CB3748}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{536F4493-CB4D-4187-B77E-87D476CB3748}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{536F4493-CB4D-4187-B77E-87D476CB3748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D85723B-901F-44B3-87B4-6718C96060D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D85723B-901F-44B3-87B4-6718C96060D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D85723B-901F-44B3-87B4-6718C96060D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D85723B-901F-44B3-87B4-6718C96060D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
