@@ -45,9 +45,20 @@ namespace GerenciadorPedido.Domain.Services
         #region Private Methods
         private void ValidarDuplicidade(Pedido pedido)
         {
-            var pedidos = _repository.Buscar(p => p.ClienteId == pedido.ClienteId && p.PedidoId == pedido.PedidoId)?.Result ?? [];
+            var pedidos = _repository.Buscar(p =>
+               p.ClienteId == pedido.ClienteId &&
+               p.PedidoId == pedido.PedidoId &&
+               p.Status == pedido.Status).Result;
 
-            if (pedidos.Any())
+            if (!pedidos.Any())
+            {
+                return;
+            }
+
+            var pedidoDuplicado = pedidos.Any(p => p.Itens.Count() == pedido.Itens.Count() &&
+                p.Itens.All(i => pedido.Itens.Any(pi => pi.ProdutoId == i.ProdutoId && pi.Quantidade == i.Quantidade)));
+
+            if (pedidoDuplicado)
             {
                 throw new Exception("Já existe um pedido para este cliente.");
             }
