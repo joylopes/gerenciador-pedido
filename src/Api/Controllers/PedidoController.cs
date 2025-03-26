@@ -14,20 +14,18 @@ namespace GerenciadorPedido.Api.Controllers
     public class PedidoController : ControllerBase
     {
         private readonly IPedidoService _pedidoService;
-        private readonly IPedidoRepository _pedidoRepository;
         private readonly IValidator<Pedido> _pedidoValidator;
 
-        public PedidoController(IPedidoService pedidoService, IPedidoRepository pedidoRepository, IValidator<Pedido> pedidoValidator)
+        public PedidoController(IPedidoService pedidoService, IValidator<Pedido> pedidoValidator)
         {
             _pedidoService = pedidoService;
-            _pedidoRepository = pedidoRepository;
             _pedidoValidator = pedidoValidator;
         }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<PedidoDTO>> ObterPedidoPorId(int id)
         {
-            var pedido = await _pedidoRepository.ObterPedidoPorId(id);
+            var pedido = await _pedidoService.ObterPorId(id);
 
             return pedido is not null ? Ok(new PedidoDTO().MapeiaParaDTO(pedido)) : NotFound();
         }
