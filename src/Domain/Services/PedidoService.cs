@@ -30,14 +30,17 @@ namespace GerenciadorPedido.Domain.Services
         {
             var pedidos = await _repository.ObterPedidosPorStatus(status) ?? [];
 
-            return pedidos.ToList().Select(p => new Pedido
+            var result = pedidos.Select(p => new Pedido
             {
+                Id = p.Id,
                 PedidoId = p.PedidoId,
                 ClienteId = p.ClienteId,
                 Imposto = CalcularImposto(p),
                 Itens = p.Itens,
                 Status = p.Status
-            });
+            }).ToList();
+
+            return result;
         }
         
         public async Task<Pedido?> ObterPorId(int id)
@@ -48,6 +51,7 @@ namespace GerenciadorPedido.Domain.Services
 
             return new Pedido
             {
+                Id = pedido.Id,
                 PedidoId = pedido.PedidoId,
                 ClienteId = pedido.ClienteId,
                 Imposto = CalcularImposto(pedido),
