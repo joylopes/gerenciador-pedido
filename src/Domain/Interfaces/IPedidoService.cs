@@ -7,5 +7,6 @@ namespace GerenciadorPedido.Domain.Interfaces
     {
         Task<Pedido> Adicionar(Pedido pedido);
         Task<IEnumerable<Pedido>> ObterPorStatus(PedidoStatus status);
+        Task<Pedido?> ObterPorId(int id);
     }
 }

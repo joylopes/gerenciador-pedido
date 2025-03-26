@@ -39,6 +39,22 @@ namespace GerenciadorPedido.Domain.Services
                 Status = p.Status
             });
         }
+        
+        public async Task<Pedido?> ObterPorId(int id)
+        {
+            var pedido = await _repository.ObterPedidoPorId(id);
+
+            if(pedido is null) return null;
+
+            return new Pedido
+            {
+                PedidoId = pedido.PedidoId,
+                ClienteId = pedido.ClienteId,
+                Imposto = CalcularImposto(pedido),
+                Itens = pedido.Itens,
+                Status = pedido.Status
+            };
+        }
 
         public void Dispose() => _repository?.Dispose();
 
@@ -47,8 +63,7 @@ namespace GerenciadorPedido.Domain.Services
         {
             var pedidos = _repository.Buscar(p =>
                p.ClienteId == pedido.ClienteId &&
-               p.PedidoId == pedido.PedidoId &&
-               p.Status == pedido.Status).Result;
+               p.PedidoId == pedido.PedidoId).Result;
 
             if (!pedidos.Any())
             {
@@ -63,12 +78,12 @@ namespace GerenciadorPedido.Domain.Services
                 throw new Exception("Já existe um pedido para este cliente.");
             }
         }
-        private decimal CalcularImpostoVigente(Pedido pedido)
+        private static decimal CalcularImpostoVigente(Pedido pedido)
         {
             return pedido.Itens.Sum(i => i.Valor) * 0.3m;
         }
 
-        private decimal CalcularImpostoReformaTributaria(Pedido pedido)
+        private static decimal CalcularImpostoReformaTributaria(Pedido pedido)
         {
             return pedido.Itens.Sum(i => i.Valor) * 0.2m;
         }
