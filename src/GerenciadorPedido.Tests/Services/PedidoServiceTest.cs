@@ -29,6 +29,8 @@ namespace GerenciadorPedido.Tests.Services
             _pedidoFaker = GenerarPedidoFake();
         }
 
+        #region Adicionar
+
         [Fact]
         public async Task Adicionar_DeveLancarException_SePedidoDuplicado()
         {
@@ -43,6 +45,25 @@ namespace GerenciadorPedido.Tests.Services
             // Assert
             await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("Já existe um pedido para este cliente.");
         }
+
+        [Fact]
+        public async Task Adicionar_DeveRetornarPedido_SeNaoForDuplicado()
+        {
+            // Arrange
+            var pedido = _pedidoFaker.Generate();
+            _repository.Buscar(Arg.Any<Expression<Func<Pedido, bool>>>())
+                .Returns(Task.FromResult(new List<Pedido>().AsEnumerable()));
+
+            _repository.Adicionar(pedido).Returns(Task.FromResult(pedido));
+
+            // Act
+            var result = await _service.Adicionar(pedido);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(pedido);
+        }
+        #endregion
 
         #region Private Methods
         private Faker<Pedido> GenerarPedidoFake()
