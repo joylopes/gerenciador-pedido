@@ -8,6 +8,6 @@
         public decimal Valor { get; set; }
 
         /* EF Relation */
-        public Pedido Pedido { get; set; }
+        public Pedido Pedido { get; set; } = null!;
     }
 }

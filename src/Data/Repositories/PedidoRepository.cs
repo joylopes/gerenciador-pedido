@@ -13,7 +13,7 @@ namespace GerenciadorPedido.Data.Repositories
         {
             return await Db.Pedidos
                 .Include(p => p.Itens)
-                .FirstOrDefaultAsync(p => p.PedidoId == id);
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<Pedido>?> ObterPedidosPorStatus(PedidoStatus status)
